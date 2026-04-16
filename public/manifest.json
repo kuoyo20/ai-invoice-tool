@@ -1,0 +1,18 @@
+{
+  "name": "AI 發票報帳神器",
+  "short_name": "AI報帳",
+  "description": "上傳發票收據照片，AI 自動辨識建檔分類，一鍵匯出 CSV 報帳明細。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#5b5bd6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
