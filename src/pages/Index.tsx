@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { FileSpreadsheet, AlertCircle, LogOut, Building2, CalendarIcon, AlertTriangle, Search, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { FileSpreadsheet, AlertCircle, LogOut, Building2, CalendarIcon, AlertTriangle, Search, Sparkles, Shield } from "lucide-react";
 import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -24,6 +25,7 @@ import ReceiptPreviewDialog from "@/components/ReceiptPreviewDialog";
 import { exportToCSV, type Expense } from "@/lib/receipt-service";
 import { useExpenses } from "@/hooks/use-expenses";
 import { useAuth } from "@/hooks/use-auth";
+import { useProfile } from "@/hooks/use-profile";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { getCompanyTheme, applyCompanyTheme, resetTheme, COMPANY_THEMES } from "@/lib/company-theme";
 
@@ -40,6 +42,7 @@ const Index = () => {
   const [previewStore, setPreviewStore] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { isAdmin } = useProfile();
 
   const {
     expenses,
@@ -168,9 +171,20 @@ const Index = () => {
               <FileSpreadsheet className="w-3.5 h-3.5" />
               匯出 CSV
             </Button>
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-violet-600 hover:text-violet-700 hover:bg-violet-50" title="管理員後台">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span className="hidden md:inline">管理</span>
+                </Button>
+              </Link>
+            )}
             <div className="ml-1 flex items-center gap-1.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-indigo-500 text-white flex items-center justify-center text-xs font-semibold shadow-soft" title={user?.email}>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-indigo-500 text-white flex items-center justify-center text-xs font-semibold shadow-soft relative" title={user?.email}>
                 {userInitial}
+                {isAdmin && (
+                  <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-violet-500 rounded-full ring-2 ring-background" title="管理員" />
+                )}
               </div>
               <Button variant="ghost" size="icon" onClick={signOut} title="登出" className="h-8 w-8">
                 <LogOut className="w-4 h-4" />
