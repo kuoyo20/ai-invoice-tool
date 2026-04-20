@@ -8,3 +8,6 @@ dist
 .vscode/
 .idea/
 .vercel
+supabase/.temp/
+verify-*.cjs
+test-*.cjs
