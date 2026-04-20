@@ -29,26 +29,31 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ expenses }) => {
       icon: DollarSign,
       label: "總金額",
       value: `$${stats.total.toLocaleString()}`,
-      color: "text-primary bg-primary/10",
+      gradient: "from-primary/10 to-primary/5",
+      iconClass: "bg-primary/15 text-primary",
     },
     {
       icon: Receipt,
       label: "總筆數",
-      value: `${stats.count} 筆`,
-      color: "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400",
+      value: `${stats.count}`,
+      sub: "筆",
+      gradient: "from-emerald-500/10 to-emerald-500/5",
+      iconClass: "bg-emerald-500/15 text-emerald-600",
     },
     {
       icon: TrendingUp,
       label: "平均金額",
       value: `$${Math.round(stats.avg).toLocaleString()}`,
-      color: "text-orange-600 bg-orange-500/10 dark:text-orange-400",
+      gradient: "from-orange-500/10 to-orange-500/5",
+      iconClass: "bg-orange-500/15 text-orange-600",
     },
     {
       icon: Tag,
       label: "最大分類",
       value: stats.topCategory ? stats.topCategory[0] : "—",
       sub: stats.topCategory ? `$${stats.topCategory[1].toLocaleString()}` : undefined,
-      color: "text-purple-600 bg-purple-500/10 dark:text-purple-400",
+      gradient: "from-purple-500/10 to-purple-500/5",
+      iconClass: "bg-purple-500/15 text-purple-600",
     },
   ];
 
@@ -57,17 +62,19 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({ expenses }) => {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-card rounded-xl border border-border p-4 flex items-start gap-3"
+          className={`bg-gradient-to-br ${card.gradient} bg-card rounded-2xl border border-border shadow-soft p-4 hover:shadow-soft-lg transition-shadow`}
         >
-          <div className={`p-2 rounded-lg ${card.color}`}>
-            <card.icon className="w-4 h-4" />
+          <div className="flex items-center gap-2 mb-2">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${card.iconClass}`}>
+              <card.icon className="w-4 h-4" />
+            </div>
+            <span className="text-xs text-muted-foreground font-medium">{card.label}</span>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs text-muted-foreground">{card.label}</p>
-            <p className="font-bold text-foreground text-sm truncate">{card.value}</p>
-            {card.sub && (
-              <p className="text-xs text-muted-foreground">{card.sub}</p>
-            )}
+          <div className="space-y-0.5">
+            <p className="font-bold text-foreground text-lg leading-tight tracking-tight truncate">
+              {card.value}
+              {card.sub && <span className="text-xs text-muted-foreground font-normal ml-1">{card.sub}</span>}
+            </p>
           </div>
         </div>
       ))}

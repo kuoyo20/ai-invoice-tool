@@ -11,13 +11,14 @@ interface ExpenseTableProps {
   onPreviewReceipt?: (url: string, storeName: string) => void;
 }
 
+// 各分類用不同色彩標籤，更清楚
 const categoryColors: Record<string, string> = {
-  交通費: "bg-accent text-accent-foreground",
-  餐飲費: "bg-accent text-accent-foreground",
-  交際費: "bg-accent text-accent-foreground",
-  辦公用品: "bg-accent text-accent-foreground",
-  進修訓練: "bg-accent text-accent-foreground",
-  雜支: "bg-muted text-muted-foreground",
+  交通費: "bg-blue-100 text-blue-700 ring-1 ring-blue-200",
+  餐飲費: "bg-orange-100 text-orange-700 ring-1 ring-orange-200",
+  交際費: "bg-pink-100 text-pink-700 ring-1 ring-pink-200",
+  辦公用品: "bg-violet-100 text-violet-700 ring-1 ring-violet-200",
+  進修訓練: "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200",
+  雜支: "bg-slate-100 text-slate-600 ring-1 ring-slate-200",
 };
 
 const ExpenseTable: React.FC<ExpenseTableProps> = ({
@@ -71,46 +72,50 @@ const ExpenseTable: React.FC<ExpenseTableProps> = ({
   );
 
   return (
-    <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden h-full flex flex-col">
-      <div className="p-4 border-b border-border bg-muted/50 flex justify-between items-center gap-2">
-        <h2 className="font-semibold text-foreground">已辨識的報帳明細</h2>
+    <div className="bg-card rounded-2xl shadow-soft border border-border overflow-hidden h-full flex flex-col">
+      <div className="px-5 py-4 border-b border-border flex justify-between items-center gap-2">
+        <div>
+          <h2 className="font-semibold text-foreground tracking-tight">報帳明細</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {expenses.length === 0 ? "尚未有資料" : `共 ${expenses.length} 筆`}
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           {selected.size > 0 && (
-            <div className="flex items-center gap-2 animate-in fade-in">
+            <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2">
               <span className="text-xs text-muted-foreground">
-                已選 {selected.size} 筆 (${selectedTotal.toLocaleString()})
+                已選 <span className="font-semibold text-foreground">{selected.size}</span> 筆
+                <span className="ml-1.5 text-foreground">${selectedTotal.toLocaleString()}</span>
               </span>
               <Button
                 variant="destructive"
                 size="sm"
-                className="h-7 text-xs gap-1"
+                className="h-8 text-xs gap-1.5 shadow-soft"
                 onClick={handleBulkDelete}
               >
-                <Trash2 className="w-3 h-3" />
-                刪除所選
+                <Trash2 className="w-3.5 h-3.5" />
+                刪除
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 text-xs gap-1"
+                className="h-8 text-xs gap-1"
                 onClick={() => setSelected(new Set())}
               >
-                <XSquare className="w-3 h-3" />
-                取消
+                <XSquare className="w-3.5 h-3.5" />
               </Button>
             </div>
           )}
-          <span className="bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-md">
-            共 {expenses.length} 筆
-          </span>
         </div>
       </div>
       <div className="p-0 overflow-x-auto flex-1 relative">
         {expenses.length === 0 ? (
-          <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-muted-foreground p-8">
-            <FileSpreadsheet className="w-12 h-12 mb-3 opacity-20" />
-            <p>目前還沒有資料</p>
-            <p className="text-sm mt-1">請從左側上傳照片開始辨識</p>
+          <div className="h-full min-h-[320px] flex flex-col items-center justify-center text-muted-foreground p-8">
+            <div className="w-16 h-16 bg-muted/60 rounded-2xl flex items-center justify-center mb-4">
+              <FileSpreadsheet className="w-7 h-7 opacity-40" />
+            </div>
+            <p className="font-medium text-foreground">目前還沒有資料</p>
+            <p className="text-sm mt-1.5">從左側上傳發票照片開始辨識</p>
           </div>
         ) : (
           <table className="w-full text-sm text-left">
